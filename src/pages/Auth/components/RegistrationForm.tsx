@@ -1,36 +1,72 @@
-import React, { useState } from 'react';
-import { Box, Paper, Typography, Link } from '@mui/material';
+import React, { useState, FormEvent } from 'react';
+import { Box, Paper, Typography } from '@mui/material';
 import FormField from './FormField';
 import SubmitButton from './SubmitButton';
+import { RegistrationDTO } from '../../../types/Auth/RegistrationDTO';
+import { registerUser } from '../../../api/auth/registerUser';
 
-interface RegistrationFormData {
-  firstName: string;
-  lastName: string;
-  dob: string;
-  course: string;
-  email: string;
-  telegram: string;
-  password: string;
-}
+const genderOptions = [
+  { value: 'Male', label: 'Мужчина' },
+  { value: 'Female', label: 'Женщина' },
+];
+
+const educationOptions = [
+  { value: 'Bachelor', label: 'Бакалавриат' },
+  { value: 'Master', label: 'Магистратура' },
+];
 
 const RegistrationForm: React.FC = () => {
-  const [form, setForm] = useState<RegistrationFormData>({
+  const [form, setForm] = useState<RegistrationDTO>({
     firstName: '',
     lastName: '',
-    dob: '',
-    course: '',
+    birthDate: '',
+    educationLevel: 'Bachelor',
+    course: 1,
+    password: '',
     email: '',
     telegram: '',
-    password: '',
+    photoUrl: null,
+    about: null,
+    gender: 'Male',
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const courseOptions =
+    form.educationLevel === 'Bachelor'
+      ? [
+          { value: '1', label: '1' },
+          { value: '2', label: '2' },
+          { value: '3', label: '3' },
+          { value: '4', label: '4' },
+        ]
+      : [
+          { value: '1', label: '1' },
+          { value: '2', label: '2' },
+        ];
+
+  const handleChange = <K extends keyof RegistrationDTO>(
+    key: K,
+    value: RegistrationDTO[K]
+  ) => {
+    setForm(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('register', form);
+    setLoading(true);
+    try {
+      const payload: RegistrationDTO = {
+        ...form,
+        birthDate: new Date(form.birthDate).toISOString(),
+      };
+      await registerUser(payload);
+      alert('Регистрация прошла успешно!');
+    } catch (err: any) {
+      console.error(err);
+      alert('Ошибка регистрации: ' + (err.message || 'Неизвестная ошибка'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,89 +94,109 @@ const RegistrationForm: React.FC = () => {
         <Typography
           variant="h5"
           align="center"
-          sx={{ color: '#2C2C2C', mb: 0.5 }}
+          sx={{ color: '#2C2C2C', mb: 0 }}
         >
           Регистрация
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ mt: 0, display: 'flex', flexDirection: 'column', gap: 0 }}
+        >
           <FormField
             label="Имя"
             name="firstName"
-            placeholder="Value"
             value={form.firstName}
-            onChange={handleChange}
+            onChange={e => handleChange('firstName', e.target.value)}
             width={506}
-            height={40}
+            height={34}
           />
 
           <FormField
             label="Фамилия"
             name="lastName"
-            placeholder="Value"
             value={form.lastName}
-            onChange={handleChange}
+            onChange={e => handleChange('lastName', e.target.value)}
             width={506}
-            height={40}
+            height={34}
           />
 
           <FormField
             label="Дата рождения"
-            name="dob"
+            name="birthDate"
             type="date"
-            placeholder="Value"
-            value={form.dob}
-            onChange={handleChange}
+            value={form.birthDate}
+            onChange={e => handleChange('birthDate', e.target.value)}
             width={506}
-            height={40}
+            height={34}
+          />
+
+          <FormField
+            label="Пол"
+            name="gender"
+            value={form.gender}
+            onChange={e => handleChange('gender', e.target.value as 'Male' | 'Female')}
+            options={genderOptions}
+            width={506}
+            height={34}
+          />
+
+           <FormField
+            label="Уровень образования"
+            name="educationLevel"
+            value={form.educationLevel}
+            onChange={e => handleChange('educationLevel', e.target.value as 'Bachelor' | 'Master')}
+            options={educationOptions}
+            width={506}
+            height={34}
           />
 
           <FormField
             label="Курс обучения"
             name="course"
-            placeholder="Value"
-            value={form.course}
-            onChange={handleChange}
+            type="number"
+            value={form.course.toString()}
+            onChange={e => handleChange('course', Number(e.target.value))}
+            options={courseOptions}
             width={506}
-            height={40}
+            height={34}
           />
 
           <FormField
             label="Email"
             name="email"
             type="email"
-            placeholder="Value"
             value={form.email}
-            onChange={handleChange}
+            onChange={e => handleChange('email', e.target.value)}
             width={506}
-            height={40}
+            height={34}
           />
 
           <FormField
             label="Телеграм"
             name="telegram"
-            placeholder="Value"
             value={form.telegram}
-            onChange={handleChange}
+            onChange={e => handleChange('telegram', e.target.value)}
             width={506}
-            height={40}
+            height={34}
           />
 
           <FormField
             label="Пароль"
             name="password"
             type="password"
-            placeholder="Value"
             value={form.password}
-            onChange={handleChange}
+            onChange={e => handleChange('password', e.target.value)}
             width={506}
-            height={40}
+            height={34}
           />
 
           <SubmitButton
             text="Зарегистрироваться"
             width={506}
-            height={40}
+            height={38}
+            disabled={loading}
           />
         </Box>
       </Paper>

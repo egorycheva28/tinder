@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
-import { Box, Paper, Typography, Link } from '@mui/material';
+import React, { useState, FormEvent } from 'react';
+import { Box, Link, Paper, Typography } from '@mui/material';
 import FormField from './FormField';
 import SubmitButton from './SubmitButton';
+import { LoginDTO } from '../../../types/Auth/LoginDTO';
+import { loginUser } from '../../../api/auth/loginUser';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm: React.FC = () => {
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState<LoginDTO>({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submit', form);
+    setLoading(true);
+    try {
+       const result = await loginUser(form);
+      const token = (result as any).token ?? result;
+      localStorage.setItem('token', token);
+      navigate('/');
+    } catch (err: any) {
+      console.error(err);
+      alert('Ошибка входа: ' + (err.message || 'Неизвестная ошибка'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,6 +81,7 @@ const LoginForm: React.FC = () => {
 
           <SubmitButton
             text="Войти"
+            disabled={loading}
           />
         </Box>
 
