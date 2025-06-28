@@ -15,7 +15,9 @@ interface FormFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   width?: number | string;
   height?: number | string;
-  options?: Option[];      
+  options?: Option[];
+  error?: boolean;
+  helperText?: string;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -28,9 +30,11 @@ const FormField: React.FC<FormFieldProps> = ({
   width = '100%',
   height,
   options,
+  error = false,
+  helperText = '',
 }) => (
-  <Box sx={{ mb: 0.1 }}>
-    <Typography variant="subtitle1" sx={{ color: '#2C2C2C', mb: 0.1 }}>
+  <Box sx={{ mb: 0 }}>
+    <Typography variant="subtitle1" sx={{ color: '#2C2C2C', mb: 0 }}>
       {label}
     </Typography>
     <TextField
@@ -42,6 +46,21 @@ const FormField: React.FC<FormFieldProps> = ({
       onChange={onChange}
       variant="outlined"
       margin="dense"
+      error={error}
+      helperText={helperText}
+      FormHelperTextProps={{
+        sx: {
+          textAlign: 'left',
+          margin: 0,
+        }
+      }}
+           InputProps={{
+        sx: {
+          '& .MuiOutlinedInput-input': {
+            padding: '4px 8px',
+          },
+        }
+      }}
       sx={{
         width,
         ...(height ? { height } : {}),
