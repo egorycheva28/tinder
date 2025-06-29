@@ -17,7 +17,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ userId, firstName, lastName, ph
         p: 1.5,
         borderBottom: 1,
         borderColor: 'divider',
-        bgcolor: 'background.paper',
+        bgcolor: '#f5f5f5',
         boxShadow: 0.5
       }}
     >

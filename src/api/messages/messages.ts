@@ -42,3 +42,20 @@ export async function sendMessage(
     { headers: { Authorization: `Bearer ${token}` } }
   );
 }
+
+export async function deleteMessage(messageId: string): Promise<void> {
+  const token = localStorage.getItem('token');
+  await api.delete(
+    `/Message/delete/${messageId}`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}
+
+export async function editMessage(messageId: string, newContent: string): Promise<void> {
+  const token = localStorage.getItem('token');
+  await api.put(
+    `/Message/edit/${messageId}`,
+    { newContent },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}

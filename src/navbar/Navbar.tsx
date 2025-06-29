@@ -100,6 +100,10 @@ const Navbar: React.FC = () => {
               navigate('/profile');
               openMenu();
             }}>Профиль</MenuItem>
+            <MenuItem onClick={() => {
+              navigate('/messenger');
+              openMenu();
+            }}>Чаты</MenuItem>
           <MenuItem onClick={() => {
             navigate('/liked');
             openMenu();

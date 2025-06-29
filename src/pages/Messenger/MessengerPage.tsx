@@ -114,6 +114,8 @@ const MessengerPage: React.FC = () => {
               loading={loadingMessages}
               selectedId={selectedId!}
               onSend={handleSend}
+              refreshMessages={refreshMessages}
+              refreshDialogs={refreshDialogs}
             />
           </>
         )}
