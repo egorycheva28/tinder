@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
       const result = await logoutUser();
       localStorage.removeItem('token');
       localStorage.removeItem('notificationsCount');
-      navigate('/');
+      navigate('/login');
     } catch (err: any) {
       console.error(err);
       alert('Ошибка выхода: ' + (err.message || 'Неизвестная ошибка'));
@@ -91,6 +91,10 @@ const Navbar: React.FC = () => {
           }}
           sx={{ position: 'absolute', top: 43 }}
         >
+          <MenuItem onClick={() => {
+            navigate('/userPreferences');
+            openMenu();
+          }}>Главная</MenuItem>
           <MenuItem
             onClick={() => {
               navigate('/profile');
@@ -99,15 +103,15 @@ const Navbar: React.FC = () => {
           <MenuItem onClick={() => {
             navigate('/liked');
             openMenu();
-          }}>Страница лайков</MenuItem>
+          }}>Мои лайки</MenuItem>
           <MenuItem onClick={() => {
             navigate('/disliked');
             openMenu();
-          }}>Страница дизлайков</MenuItem>
+          }}>Мои дизлайки</MenuItem>
           <MenuItem onClick={() => {
             navigate('/matches');
             openMenu();
-          }}>Страница мэтчей</MenuItem>
+          }}>Мои мэтчи</MenuItem>
           <MenuItem onClick={() => {
             navigate('/notifications');
             openMenu();

@@ -32,33 +32,33 @@ const LoginForm: React.FC = () => {
     setErrors(prev => ({ ...prev, [name]: undefined, auth: undefined }));
   };
 
-const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const isValid = validate();
-  if (!isValid) {
-    setLoading(false);
-    return;
-  }
-
-  setLoading(true);
-  try {
-    const result = await loginUser(form);
-    const token = typeof result === 'string' ? result : result?.token;
-    if (!token) throw new Error('Token not received');
-
-    localStorage.setItem('token', token);
-    navigate('/');
-  } catch (err: any) {
-    if (err.validationErrors) {
-      setErrors(err.validationErrors);
-    } else {
-      setErrors({ auth: err.message || 'Неверный логин или пароль' });
+    const isValid = validate();
+    if (!isValid) {
+      setLoading(false);
+      return;
     }
-  } finally {
-    setLoading(false);
-  }
-};
+
+    setLoading(true);
+    try {
+      const result = await loginUser(form);
+      const token = typeof result === 'string' ? result : result?.token;
+      if (!token) throw new Error('Token not received');
+
+      localStorage.setItem('token', token);
+      navigate('/userPreferences');
+    } catch (err: any) {
+      if (err.validationErrors) {
+        setErrors(err.validationErrors);
+      } else {
+        setErrors({ auth: err.message || 'Неверный логин или пароль' });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (

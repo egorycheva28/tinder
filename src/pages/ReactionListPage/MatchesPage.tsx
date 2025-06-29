@@ -4,7 +4,7 @@ import { getMatchedUsers } from '../../api/reactions/matches';
 
 const MatchesPage = () => (
   <ReactionListPage
-    title="Страница матчей"
+    title="Мои мэтчи"
     fetchData={getMatchedUsers}
     showTelegram={true}
     actionIcon={<ChatIcon color="primary" />}

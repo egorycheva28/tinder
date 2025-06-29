@@ -4,7 +4,7 @@ import { getDislikedUsers, removeUserPreference } from '../../api/reactions/disl
 
 const DislikesPage = () => (
   <ReactionListPage
-    title="Страница дизлайков"
+    title="Мои дизлайки"
     fetchData={getDislikedUsers}
     showTelegram={false}
     actionIcon={<CloseIcon color="action" />}

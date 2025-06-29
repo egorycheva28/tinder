@@ -4,7 +4,7 @@ import ReactionListPage from './ReactionListPage';
 
 const LikedPage = () => (
   <ReactionListPage
-    title="Страница лайков"
+    title="Мои лайки"
     fetchData={getLikedUsers}
     showTelegram={false}
     showMatchLabel={true}  

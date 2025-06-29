@@ -4,6 +4,7 @@ import FormField from './FormField';
 import SubmitButton from './SubmitButton';
 import { RegistrationDTO } from '../../../types/Auth/RegistrationDTO';
 import { registerUser } from '../../../api/auth/registerUser';
+import { useNavigate } from 'react-router-dom';
 
 const genderOptions = [
   { value: 'Male', label: 'Мужчина' },
@@ -16,6 +17,8 @@ const educationOptions = [
 ];
 
 const RegistrationForm: React.FC = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState<RegistrationDTO>({
     firstName: '',
     lastName: '',
@@ -78,6 +81,7 @@ const RegistrationForm: React.FC = () => {
     try {
       const payload = { ...form, birthDate: new Date(form.birthDate).toISOString() };
       await registerUser(payload);
+      navigate('/login');
       alert('Регистрация прошла успешно!');
     } catch (err: any) {
       alert('Ошибка регистрации: ' + (err.message || 'Неизвестная ошибка'));
@@ -108,7 +112,7 @@ const RegistrationForm: React.FC = () => {
           overflowY: 'auto',
         }}
       >
-        <Typography variant="h5" align="center" sx={{ color: '#2C2C2C', mb: 0.5 ,  mt: 0.5}}>
+        <Typography variant="h5" align="center" sx={{ color: '#2C2C2C', mb: 0.5, mt: 0.5 }}>
           Регистрация
         </Typography>
 
