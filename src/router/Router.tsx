@@ -5,6 +5,7 @@ import RegisterPage from '../pages/Auth/RegisterPage';
 import UserPreferencesPage from '../pages/Preferences/UserPreferencesPage';
 import ProfilePage from '../pages/Profile/ProfilePage';
 import Navbar from '../navbar/Navbar';
+import NotificationPage from '../pages/Notifications/NotificationPage';
 
 //const location = useLocation();
 const Router: React.FC = () => (
@@ -16,6 +17,7 @@ const Router: React.FC = () => (
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/" element={<UserPreferencesPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/notifications" element={<NotificationPage />} />
     </Routes>
   </BrowserRouter>
 );
