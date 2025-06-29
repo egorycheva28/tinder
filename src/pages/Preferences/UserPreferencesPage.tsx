@@ -87,10 +87,10 @@ const UserPreferencesPage: React.FC = () => {
   );
 
   return (
-    <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Typography variant="h4" sx={{ mb: 2 }}>
+    <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center',  top: 80, position: 'relative'}}>
+      {/* <Typography variant="h4" sx={{ mb: 2 }}>
         Анкеты пользователей
-      </Typography>
+      </Typography> */}
 
       <FiltersBar filters={filters} onChange={handleFilterChange} />
 
