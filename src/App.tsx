@@ -1,10 +1,6 @@
 import Router from './router/Router';
 import './App.css';
-import { AuthProvider } from './context/AuthContext';
 
-const App: React.FC = () => (
-  <AuthProvider>  
-    <Router />
-  </AuthProvider>
-);
+const App: React.FC = () => <Router />;
+
 export default App;

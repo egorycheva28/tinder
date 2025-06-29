@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getDialogs as fetchRawDialogs, RawDialogDTO } from '../api/messages/messages';
 import { DialogDTO } from '../types/Messenger/DialogDTO';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStorage } from './useAuthStorage';
 
 export function useDialogs() {
-  const { userId } = useAuth();
+  const { userId } = useAuthStorage();
   const [dialogs, setDialogs] = useState<DialogDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -14,6 +14,7 @@ export function useDialogs() {
       setLoading(false);
       return;
     }
+
     setLoading(true);
     try {
       const raw: RawDialogDTO[] = await fetchRawDialogs();

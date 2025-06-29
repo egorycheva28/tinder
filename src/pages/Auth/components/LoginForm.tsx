@@ -5,15 +5,15 @@ import SubmitButton from './SubmitButton';
 import { LoginDTO } from '../../../types/Auth/LoginDTO';
 import { loginUser } from '../../../api/auth/loginUser';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../context/AuthContext';
 import { profileUser } from '../../../api/profile/profileUser';
+import { useAuthStorage } from '../../../hooks/useAuthStorage';
 
 const LoginForm: React.FC = () => {
   const [form, setForm] = useState<LoginDTO>({ email: '', password: '' });
   const [errors, setErrors] = useState<Partial<LoginDTO> & { auth?: string }>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUserId } = useAuth();
+ const { setUserId } = useAuthStorage();
   
   const validate = (): boolean => {
     const e: typeof errors = {};
