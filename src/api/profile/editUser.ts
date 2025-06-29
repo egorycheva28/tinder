@@ -26,7 +26,7 @@ export async function editUser(data: EditProfileDTO): Promise<any> {
 
             const message = typeof data === 'string'
                 ? data
-                : data?.message || 'Такая почта или телеграм уже существуют';
+                : data?.message || 'Видимо такая почта или телеграм уже существуют';
 
             throw new Error(message);
         }

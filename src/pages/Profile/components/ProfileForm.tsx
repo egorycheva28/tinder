@@ -31,7 +31,7 @@ const ProfileForm: React.FC = () => {
     const birthDateValue = editedProfile?.birthDate ? new Date(editedProfile?.birthDate).toISOString().slice(0, 10) : '';
 
     const courseOptions =
-        profile?.educationLevel === 'Bachelor'
+        editedProfile?.educationLevel === 'Bachelor'
             ? ['1', '2', '3', '4'].map(v => ({ value: v, label: v }))
             : ['1', '2'].map(v => ({ value: v, label: v }));
 
@@ -197,7 +197,7 @@ const ProfileForm: React.FC = () => {
             setLoading(true);
             const data = await getProfile();
             setLoading(false);
-        };
+        }
 
         loadData();
     }, [isEditing]);
