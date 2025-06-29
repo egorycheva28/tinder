@@ -5,13 +5,16 @@ import SubmitButton from './SubmitButton';
 import { LoginDTO } from '../../../types/Auth/LoginDTO';
 import { loginUser } from '../../../api/auth/loginUser';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
+import { profileUser } from '../../../api/profile/profileUser';
 
 const LoginForm: React.FC = () => {
   const [form, setForm] = useState<LoginDTO>({ email: '', password: '' });
   const [errors, setErrors] = useState<Partial<LoginDTO> & { auth?: string }>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const { setUserId } = useAuth();
+  
   const validate = (): boolean => {
     const e: typeof errors = {};
     if (!form.email) {
@@ -46,8 +49,9 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     const result = await loginUser(form);
     const token = typeof result === 'string' ? result : result?.token;
     if (!token) throw new Error('Token not received');
-
     localStorage.setItem('token', token);
+    const profile = await profileUser();
+    setUserId(profile.id);
     navigate('/');
   } catch (err: any) {
     if (err.validationErrors) {

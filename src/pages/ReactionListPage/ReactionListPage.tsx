@@ -20,6 +20,7 @@ interface ReactionListPageProps {
   showMatchLabel?: boolean;
   actionIcon: ReactNode;
   onAction: (userId: string) => void;
+  onDataLoaded?: (users: UserDTO[]) => void;
 }
 
 const EDUCATION_LEVEL_TRANSLATIONS: Record<string,string> = {
@@ -33,7 +34,9 @@ const ReactionListPage: React.FC<ReactionListPageProps> = ({
   showTelegram = false,
   showMatchLabel = false, 
   actionIcon,
-  onAction
+  onAction,
+  onDataLoaded,
+  
 }) => {
   const [users, setUsers] = useState<UserDTO[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,12 +48,13 @@ const ReactionListPage: React.FC<ReactionListPageProps> = ({
       const resp = await fetchData();
       setUsers(resp.users);
       setError(null);
+       onDataLoaded?.(resp.users);
     } catch {
       setError('Не удалось загрузить данные.');
     } finally {
       setLoading(false);
     }
-  }, [fetchData]);
+  }, [fetchData,  onDataLoaded]);
 
   useEffect(() => {
     load();
