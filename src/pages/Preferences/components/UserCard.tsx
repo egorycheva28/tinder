@@ -19,7 +19,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
   const controls = useAnimationControls();
   const educationRus = EDUCATION_LEVEL_TRANSLATIONS[user.educationLevel] || user.educationLevel;
 
-  const handleSwipe = useCallback(
+  const triggerSwipe = useCallback(
     (dir: 'left' | 'right') => {
       controls
         .start({
@@ -28,8 +28,8 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
           transition: { duration: 0.4 }
         })
         .then(() => {
-          controls.set({ x: 0, rotate: 0 });
           onSwipe(dir);
+          controls.set({ x: 0, rotate: 0 });
         });
     },
     [controls, onSwipe]
@@ -37,10 +37,10 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') handleSwipe('right');
-      if (e.key === 'ArrowLeft') handleSwipe('left');
+      if (e.key === 'ArrowRight') triggerSwipe('right');
+      if (e.key === 'ArrowLeft') triggerSwipe('left');
     },
-    [handleSwipe]
+    [triggerSwipe]
   );
 
   useEffect(() => {
@@ -65,34 +65,44 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={1}
           onDragEnd={(_, info: PanInfo) => {
-            if (info.offset.x > 120) handleSwipe('right');
-            if (info.offset.x < -120) handleSwipe('left');
+            if (info.offset.x > 120) triggerSwipe('right');
+            if (info.offset.x < -120) triggerSwipe('left');
           }}
           style={{ cursor: 'grab' }}
         >
-          <Card sx={{ borderRadius: 3, overflow: 'hidden', boxShadow: 4 }}>
-            {user.photoUrl ? (
-              <CardMedia
-                component="img"
-                height="400"
-                image={user.photoUrl}
-                alt={`${user.firstName} ${user.lastName}`}
-              />
-            ) : (
-              <Box
-                sx={{
-                  height: 400,
-                  backgroundColor: 'grey.300',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Typography variant="h4" sx={{ color: '#fff' }}>
-                  НЕТ ФОТО
-                </Typography>
-              </Box>
-            )}
+          <Card sx={{ width: 400, height: 550, borderRadius: 3, overflow: 'hidden', boxShadow: 4 }}>
+            <Box sx={{ width: '100%', height: 400, position: 'relative' }}>
+              {user.photoUrl ? (
+                <CardMedia
+                  component="img"
+                  image={user.photoUrl}
+                  alt={`${user.firstName} ${user.lastName}`}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0
+                  }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'grey.300',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Typography variant="h4" sx={{ color: '#fff' }}>
+                    НЕТ ФОТО
+                  </Typography>
+                </Box>
+              )}
+            </Box>
             <CardContent sx={{ py: 2, px: 3 }}>
               <Typography variant="h4" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
                 {user.firstName} {user.lastName}, {user.age}
@@ -109,10 +119,10 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
           </Card>
         </motion.div>
         <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 2 }}>
-          <IconButton onClick={() => handleSwipe('left')} sx={{ bgcolor: '#fff', boxShadow: 2 }}>
+          <IconButton onClick={() => triggerSwipe('left')} sx={{ bgcolor: '#fff', boxShadow: 2 }}>
             <CloseIcon fontSize="large" />
           </IconButton>
-          <IconButton onClick={() => handleSwipe('right')} sx={{ bgcolor: '#fff', boxShadow: 2 }}>
+          <IconButton onClick={() => triggerSwipe('right')} sx={{ bgcolor: '#fff', boxShadow: 2 }}>
             <FavoriteIcon fontSize="large" color="error" />
           </IconButton>
         </Box>
