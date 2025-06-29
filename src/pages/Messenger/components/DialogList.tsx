@@ -35,7 +35,7 @@ const DialogList: React.FC<DialogListProps> = ({
   }
 
   return (
-    <List disablePadding>
+    <List disablePadding  sx={{ bgcolor: '#0A0A0A' }}>
       {dialogs.map((d, idx) => (
         <React.Fragment key={d.withUserId}>
           <ListItem disablePadding>
@@ -43,21 +43,19 @@ const DialogList: React.FC<DialogListProps> = ({
               selected={d.withUserId === selectedId}
               onClick={() => onSelect(d.withUserId)}
               alignItems="flex-start"
+              sx={{ '&.Mui-selected': { bgcolor: '#1A1A1A' } }}
             >
               <ListItemAvatar>
-                <Avatar src={d.withPhotoUrl || undefined} />
+                <Avatar src={d.withPhotoUrl || undefined} 
+                 sx={{ border: '2px solid #F500A1' }} />
               </ListItemAvatar>
               <ListItemText
-                 primary={`${d.withFirstName} ${d.withLastName}`}
-                secondary={
-                  <Typography noWrap variant="body2">
-                    {d.lastMessageContent}
-                  </Typography>
-                }
+                  primary={<Box component="span" sx={{ color: '#F500A1', fontWeight:600 }}>{`${d.withFirstName} ${d.withLastName}`}</Box>}
+                secondary={<Box component="span" sx={{ color: '#ccc' }}>{d.lastMessageContent}</Box>}
               />
             </ListItemButton>
           </ListItem>
-          {idx < dialogs.length - 1 && <Divider component="li" />}
+          {idx < dialogs.length - 1 && <Divider component="li"  sx={{ bgcolor: '#333' }} />}
         </React.Fragment>
       ))}
     </List>
