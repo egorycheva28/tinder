@@ -4,6 +4,7 @@ import LoginPage from '../pages/Auth/LoginPage';
 import RegisterPage from '../pages/Auth/RegisterPage';
 import ProfilePage from '../pages/Profile/ProfilePage';
 import Navbar from '../navbar/Navbar';
+import NotificationPage from '../pages/Notifications/NotificationPage';
 
 //const location = useLocation();
 const Router: React.FC = () => (
@@ -14,6 +15,7 @@ const Router: React.FC = () => (
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/notifications" element={<NotificationPage />} />
     </Routes>
   </BrowserRouter>
 );

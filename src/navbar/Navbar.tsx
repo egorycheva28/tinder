@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -9,6 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../api/auth/logoutUser';
+import { getNotifications } from '../api/notifications/getNotifications';
+import { NotificationDTO } from '../types/Notifications/NotiificationDTO';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ const Navbar: React.FC = () => {
     try {
       const result = await logoutUser();
       localStorage.removeItem('token');
+      localStorage.removeItem('notificationsCount');
       navigate('/');
     } catch (err: any) {
       console.error(err);
@@ -30,6 +33,35 @@ const Navbar: React.FC = () => {
     } finally {
     }
   };
+
+  const getUnreadCount = async () => {
+    const result: NotificationDTO[] = await getNotifications();
+    if (!result) return 0;
+    return result.filter(n => !n.isRead).length;
+  };
+
+  const updateNotificationsCount = async () => {
+    try {
+      const count = await getUnreadCount();
+      localStorage.setItem('notificationsCount', count.toString());
+    } catch (err) {
+      console.error('Ошибка при обновлении уведомлений:', err);
+    }
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      await updateNotificationsCount();
+
+      const intervalId = setInterval(async () => {
+        await updateNotificationsCount();
+      }, 30000);
+
+      return () => clearInterval(intervalId);
+    };
+
+    loadData();
+  }, []);
 
   return (
     <AppBar sx={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000, backgroundColor: 'black' }}>
@@ -81,9 +113,9 @@ const Navbar: React.FC = () => {
             openMenu();
           }}>Страница мэтчей</MenuItem>
           <MenuItem onClick={() => {
-            navigate('/profile');
+            navigate('/notifications');
             openMenu();
-          }}>Уведомления</MenuItem>
+          }}>Уведомления ({localStorage.getItem('notificationsCount')})</MenuItem>
           <MenuItem onClick={() => { logout() }}>Выход</MenuItem>
         </Menu>
       </Toolbar>
