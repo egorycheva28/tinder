@@ -9,6 +9,7 @@ import NotificationPage from '../pages/Notifications/NotificationPage';
 import LikedPage from '../pages/ReactionListPage/LikedPage';
 import DislikesPage from '../pages/ReactionListPage/DislikesPage';
 import MatchesPage from '../pages/ReactionListPage/MatchesPage';
+import MessengerPage from '../pages/Messenger/MessengerPage';
 
 const Router: React.FC = () => {
   const location = useLocation();
@@ -28,6 +29,8 @@ const Router: React.FC = () => {
         <Route path="/liked" element={<LikedPage />} />
         <Route path="/disliked" element={<DislikesPage />} />
         <Route path="/matches" element={<MatchesPage />} />
+        <Route path="/messenger" element={<MessengerPage />} />
+        <Route path="/messenger/:selectedId" element={<MessengerPage />} />
       </Routes>
     </>
   );

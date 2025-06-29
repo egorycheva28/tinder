@@ -5,13 +5,16 @@ import SubmitButton from './SubmitButton';
 import { LoginDTO } from '../../../types/Auth/LoginDTO';
 import { loginUser } from '../../../api/auth/loginUser';
 import { useNavigate } from 'react-router-dom';
+import { profileUser } from '../../../api/profile/profileUser';
+import { useAuthStorage } from '../../../hooks/useAuthStorage';
 
 const LoginForm: React.FC = () => {
   const [form, setForm] = useState<LoginDTO>({ email: '', password: '' });
   const [errors, setErrors] = useState<Partial<LoginDTO> & { auth?: string }>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+ const { setUserId } = useAuthStorage();
+  
   const validate = (): boolean => {
     const e: typeof errors = {};
     if (!form.email) {
@@ -35,12 +38,11 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const isValid = validate();
-    if (!isValid) {
-      setLoading(false);
-      return;
-    }
-
+  const isValid = validate();
+  if (!isValid) {
+    setLoading(false);
+    return;
+  }
     setLoading(true);
     try {
       const result = await loginUser(form);
