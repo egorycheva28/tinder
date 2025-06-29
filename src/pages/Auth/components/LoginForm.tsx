@@ -48,7 +48,7 @@ const LoginForm: React.FC = () => {
       if (!token) throw new Error('Token not received');
 
       localStorage.setItem('token', token);
-      navigate('/userPreferences');
+      navigate('/profile');
     } catch (err: any) {
       if (err.validationErrors) {
         setErrors(err.validationErrors);
