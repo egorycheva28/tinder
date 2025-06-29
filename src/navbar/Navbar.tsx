@@ -65,19 +65,15 @@ const Navbar: React.FC = () => {
               openMenu();
             }}>Профиль</MenuItem>
           <MenuItem onClick={() => {
-            navigate('/profile');
-            openMenu();
-          }}>Страница пользователей</MenuItem>
-          <MenuItem onClick={() => {
-            navigate('/profile');
+            navigate('/liked');
             openMenu();
           }}>Страница лайков</MenuItem>
           <MenuItem onClick={() => {
-            navigate('/profile');
+            navigate('/disliked');
             openMenu();
           }}>Страница дизлайков</MenuItem>
           <MenuItem onClick={() => {
-            navigate('/profile');
+            navigate('/matches');
             openMenu();
           }}>Страница мэтчей</MenuItem>
           <MenuItem onClick={() => {
