@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Avatar, Typography } from '@mui/material';
+import { Box, Avatar, Typography, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
 import SubmitButton from './SubmitButton';
 import { profileUser } from '../../../api/profile/profileUser';
 import { ProfileDTO } from '../../../types/Profile/ProfileDTO';
@@ -12,6 +12,7 @@ const ProfileForm: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState<Partial<Record<keyof EditProfileDTO, string>>>({});
+    const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
     const [editedProfile, setEditedProfile] = useState<EditProfileDTO>(
         {
@@ -22,7 +23,7 @@ const ProfileForm: React.FC = () => {
             course: null,
             email: '',
             telegram: '',
-            photoUrl: '',
+            photoUrl: null,
             about: '',
             gender: null
         });
@@ -56,20 +57,30 @@ const ProfileForm: React.FC = () => {
         '': ''
     };
 
-    /*const validate = (): boolean => {
+    const validate = (): boolean => {
         const e: typeof errors = {};
 
-        if (!/^[A-ZА-ЯЁ][A-Za-zА-Яа-яЁё]{1,49}$/.test(editedProfile.firstName)) {
+        if (typeof editedProfile.firstName === 'string' &&
+            !/^[A-ZА-ЯЁ][A-Za-zА-Яа-яЁё]{1,49}$/.test(editedProfile.firstName)) {
             e.firstName = 'Некорректное имя. С большой буквы, только буквы, длина 2–50.';
         }
-        if (!/^[A-ZА-ЯЁ][A-Za-zА-Яа-яЁё]{1,49}$/.test(editedProfile.lastName)) {
+        if (typeof editedProfile.lastName === 'string' &&
+            !/^[A-ZА-ЯЁ][A-Za-zА-Яа-яЁё]{1,49}$/.test(editedProfile.lastName)) {
             e.lastName = 'Некорректная фамилия. С большой буквы, только буквы, длина 2–50.';
         }
         if (!editedProfile.birthDate) {
             e.birthDate = 'Поле обязательно.';
         }
+        const date = new Date(editedProfile?.birthDate || "");
+        const year = date.getFullYear();
+        if (year < 1900 || year > 2008) {
+            e.birthDate = 'Достпуная дата рождения с 1900 по 2008 года.';
+        }
         if (!editedProfile.email) {
             e.email = 'Поле обязательно.';
+        }
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editedProfile.email)) {
+            e.email = 'Некорректный формат электронной почты.';
         }
         if (!editedProfile.telegram) {
             e.telegram = 'Поле обязательно.';
@@ -77,7 +88,11 @@ const ProfileForm: React.FC = () => {
 
         setErrors(e);
         return Object.keys(e).length === 0;
-    };*/
+    };
+
+    const handleAvatarClick = () => {
+        setIsAvatarModalOpen(true);
+    };
 
     const formatDate = (date: (Date | '' | string)) => {
         if (!date) return "Нет данных";
@@ -89,14 +104,18 @@ const ProfileForm: React.FC = () => {
         setIsEditing(true);
     };
 
-    const save = () => {
-        editProfile();
+    const save = async () => {
+        const result = await editProfile();
+        if (!result) return;
         getProfile();
         setIsEditing(false);
+        setErrors({});
+
     };
 
     const cancel = () => {
         setIsEditing(false);
+        setErrors({});
         setEditedProfile({
             ...editedProfile,
             lastName: profile?.lastName,
@@ -145,6 +164,7 @@ const ProfileForm: React.FC = () => {
     };
 
     const editProfile = async () => {
+        if (!validate()) return false;
         setLoading(true);
         try {
             if (editedProfile.email === profile?.email) {
@@ -153,9 +173,17 @@ const ProfileForm: React.FC = () => {
             if (editedProfile.telegram === profile?.telegram) {
                 editedProfile.telegram = null;
             }
+            if (editedProfile.photoUrl === '') {
+                localStorage.setItem('photoUrl', "");
+            }
             const date = new Date(editedProfile?.birthDate || "");
             editedProfile.birthDate = date.toISOString();
             const result = await editUser(editedProfile);
+
+            if (editedProfile.photoUrl !== profile?.photoUrl) {
+                window.location.reload();
+            }
+            return true;
         } catch (err: any) {
             console.error(err);
             alert('Ошибка редактирования профиля: ' + (err.message || 'Неизвестная ошибка'));
@@ -186,10 +214,42 @@ const ProfileForm: React.FC = () => {
                 <Box sx={{ flexBasis: '33%', textAlign: isEditing ? 'left' : 'center' }}>
                     <Avatar
                         src={editedProfile.photoUrl || ""}
-                        sx={{ width: 350, height: 350, marginX: 'auto', bgcolor: 'grey.400', mb: 4, cursor: 'pointer', mt: 2 }}
+                        sx={{ width: 350, height: 350, marginX: 'auto', bgcolor: 'grey.400', mb: 4, cursor: isEditing ? 'pointer' : 'default', mt: 2 }}
+                        {...(isEditing ? { onClick: handleAvatarClick } : {})}
                     >
-                        БЗ
+                        {editedProfile.lastName?.[0]}
+                        {editedProfile.firstName?.[0]}
                     </Avatar>
+                    <Dialog open={isAvatarModalOpen} onClose={() => setIsAvatarModalOpen(false)}>
+                        <DialogTitle>Введите URL аватарки</DialogTitle>
+                        <DialogContent>
+                            <FormField
+                                label="Аватарка"
+                                name="photoUrl"
+                                type="text"
+                                placeholder="Url на аватарку"
+                                value={editedProfile?.photoUrl || ''}
+                                onChange={handleChange}
+                                disabled={!isEditing}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <SubmitButton
+                                text="Отмена"
+                                onClick={() => setIsAvatarModalOpen(false)}
+                                variant="contained"
+                                color="primary"
+                                width="130px"
+                            />
+                            <SubmitButton
+                                text="Сохранить"
+                                onClick={() => setIsAvatarModalOpen(false)}
+                                variant="contained"
+                                color="primary"
+                                width="130px"
+                            />
+                        </DialogActions>
+                    </Dialog>
                     {isEditing ? (
                         <>
                             <FormField
@@ -200,6 +260,8 @@ const ProfileForm: React.FC = () => {
                                 value={editedProfile?.lastName || ''}
                                 onChange={handleChange}
                                 disabled={!isEditing}
+                                error={!!errors.lastName}
+                                helperText={errors.lastName}
                             />
                             <FormField
                                 label="Имя"
@@ -209,6 +271,8 @@ const ProfileForm: React.FC = () => {
                                 value={editedProfile?.firstName || ''}
                                 onChange={handleChange}
                                 disabled={!isEditing}
+                                error={!!errors.firstName}
+                                helperText={errors.firstName}
                             />
                         </>
                     ) : (
@@ -233,6 +297,8 @@ const ProfileForm: React.FC = () => {
                                     onChange={handleChange}
                                     disabled={!isEditing}
                                     options={genderOptions}
+                                    error={!!errors.gender}
+                                    helperText={errors.gender}
                                 />
                                 <FormField
                                     label="Дата рождения"
@@ -242,6 +308,8 @@ const ProfileForm: React.FC = () => {
                                     value={birthDateValue}
                                     onChange={handleChange}
                                     disabled={!isEditing}
+                                    error={!!errors.birthDate}
+                                    helperText={errors.birthDate}
                                 />
                                 <FormField
                                     label="Возраст"
@@ -257,6 +325,8 @@ const ProfileForm: React.FC = () => {
                                     onChange={handleChange}
                                     disabled={!isEditing}
                                     options={educationOptions}
+                                    error={!!errors.educationLevel}
+                                    helperText={errors.educationLevel}
                                 />
                                 <FormField
                                     label="Курс"
@@ -267,6 +337,8 @@ const ProfileForm: React.FC = () => {
                                     onChange={handleChange}
                                     disabled={!isEditing}
                                     options={courseOptions}
+                                    error={!!errors.course}
+                                    helperText={errors.course}
                                 />
                                 <FormField
                                     label="Email"
@@ -276,6 +348,8 @@ const ProfileForm: React.FC = () => {
                                     value={editedProfile?.email || ''}
                                     onChange={handleChange}
                                     disabled={!isEditing}
+                                    error={!!errors.email}
+                                    helperText={errors.email}
                                 />
 
                                 <FormField
@@ -286,6 +360,8 @@ const ProfileForm: React.FC = () => {
                                     value={editedProfile?.telegram || ''}
                                     onChange={handleChange}
                                     disabled={!isEditing}
+                                    error={!!errors.telegram}
+                                    helperText={errors.telegram}
                                 />
                                 <FormField
                                     label="О себе"
@@ -357,15 +433,15 @@ const ProfileForm: React.FC = () => {
                 ) : (
                     <>
                         <SubmitButton
-                            text="Сохранить"
-                            onClick={save}
-                            variant="contained"
-                            width="170px"
-                        />
-                        <SubmitButton
                             text="Отмена"
                             onClick={cancel}
                             variant="outlined"
+                            width="170px"
+                        />
+                        <SubmitButton
+                            text="Сохранить"
+                            onClick={save}
+                            variant="contained"
                             width="170px"
                         />
                     </>

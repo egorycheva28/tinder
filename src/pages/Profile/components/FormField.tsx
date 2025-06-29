@@ -62,7 +62,7 @@ const FormField: React.FC<FormFieldProps> = ({
         margin="dense"
         error={error} 
         helperText={helperText}
-        /*FormHelperTextProps={{
+        FormHelperTextProps={{
           sx: {
             textAlign: 'left',
             margin: 0,
@@ -74,7 +74,7 @@ const FormField: React.FC<FormFieldProps> = ({
               padding: '4px 8px',
             },
           }
-        }}*/
+        }}
         sx={{
           width,
           ...(height ? { height } : {}),
