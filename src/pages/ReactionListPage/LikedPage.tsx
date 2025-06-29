@@ -7,8 +7,9 @@ const LikedPage = () => (
     title="Мои лайки"
     fetchData={getLikedUsers}
     showTelegram={false}
-    showMatchLabel={true}  
-    actionIcon={<FavoriteIcon color="error" />}
+    showMatchLabel={true}
+    actionIcon={<FavoriteIcon />}
+    actionButtonColor="#F500A1"
     onAction={removeUserPreference}
   />
 );
