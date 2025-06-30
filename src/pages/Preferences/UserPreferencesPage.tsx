@@ -5,7 +5,6 @@ import { UserPreviewDTO } from '../../types/Preferences/UserPreviewDTO';
 import UserCard from './components/UserCard';
 import FiltersBar, { Filters } from './components/FiltersBar';
 
-
 const UserPreferencesPage: React.FC = () => {
   const [filters, setFilters] = useState<Filters>({
     educationLevel: '',
@@ -87,26 +86,32 @@ const UserPreferencesPage: React.FC = () => {
   );
 
   return (
-    <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center',  top: 80, position: 'relative'}}>
-      {/* <Typography variant="h4" sx={{ mb: 2 }}>
-        Анкеты пользователей
-      </Typography> */}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        bgcolor: '#0A0A0A',
+        minHeight: '100vh',
+        color: '#fff',
+        top: 50, 
+        position: 'relative'
+      }}
+    >
+      <Typography variant="h4" sx={{ mb: 3, color: '#F500A1', fontWeight: 700 }}>
+      </Typography>
 
       <FiltersBar filters={filters} onChange={handleFilterChange} />
 
-      {error && <Typography color="error">{error}</Typography>}
+      {error && <Typography color="error" sx={{ mt: 4 }}>{error}</Typography>}
       {noMoreMessage && (
-        <Typography color="textSecondary" sx={{ mt: 4, textAlign: 'center' }}>
+        <Typography color="#aaa" sx={{ mt: 4, textAlign: 'center' }}>
           {noMoreMessage}
         </Typography>
       )}
 
-      {!current && !error && !noMoreMessage && (
-        <Typography></Typography>
-      )}
-
       {current && !noMoreMessage && (
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{ mt: 4 }}>
           <UserCard user={current} onSwipe={handleSwipe} />
         </Box>
       )}

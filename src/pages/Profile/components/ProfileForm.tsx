@@ -214,15 +214,15 @@ const ProfileForm: React.FC = () => {
                 <Box sx={{ flexBasis: '33%', textAlign: isEditing ? 'left' : 'center' }}>
                     <Avatar
                         src={editedProfile.photoUrl || ""}
-                        sx={{ width: 350, height: 350, marginX: 'auto', bgcolor: 'grey.400', mb: 4, cursor: isEditing ? 'pointer' : 'default', mt: 2 }}
+                        sx={{ width: 350, height: 350, marginX: 'auto', bgcolor: 'grey.400', mb: 4, cursor: isEditing ? 'pointer' : 'default', mt: 2, border: '2px solid #F500A1' }}
                         {...(isEditing ? { onClick: handleAvatarClick } : {})}
                     >
                         {editedProfile.lastName?.[0]}
                         {editedProfile.firstName?.[0]}
                     </Avatar>
                     <Dialog open={isAvatarModalOpen} onClose={() => setIsAvatarModalOpen(false)}>
-                        <DialogTitle>Введите URL аватарки</DialogTitle>
-                        <DialogContent>
+                        <DialogTitle sx={{ backgroundColor: '#0A0A0A', color: '#F500A1' }}>Введите URL аватарки</DialogTitle>
+                        <DialogContent sx={{ backgroundColor: '#0A0A0A' }}>
                             <FormField
                                 label="Аватарка"
                                 name="photoUrl"
@@ -233,7 +233,7 @@ const ProfileForm: React.FC = () => {
                                 disabled={!isEditing}
                             />
                         </DialogContent>
-                        <DialogActions>
+                        <DialogActions sx={{ backgroundColor: '#0A0A0A' }}>
                             <SubmitButton
                                 text="Отмена"
                                 onClick={() => setIsAvatarModalOpen(false)}
@@ -276,13 +276,13 @@ const ProfileForm: React.FC = () => {
                             />
                         </>
                     ) : (
-                        <Typography variant="h4" >
+                        <Typography variant="h4" sx={{ color: '#fff' }}>
                             {editedProfile?.lastName} {editedProfile?.firstName}
                         </Typography>
                     )}
                 </Box>
                 <Box sx={{ flexBasis: '55%' }}>
-                    <Typography variant="h4" align="left" sx={{ color: '#2C2C2C', mb: 2, mt: 2 }}>
+                    <Typography variant="h4" align="left" sx={{ color: '#F500A1', mb: 2, mt: 2 }}>
                         Личные данные
                     </Typography>
                     <Box component="div" display="flex" flexDirection="column">

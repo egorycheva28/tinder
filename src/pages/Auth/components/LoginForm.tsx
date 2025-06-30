@@ -13,8 +13,8 @@ const LoginForm: React.FC = () => {
   const [errors, setErrors] = useState<Partial<LoginDTO> & { auth?: string }>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
- const { setUserId } = useAuthStorage();
-  
+  const { setUserId } = useAuthStorage();
+
   const validate = (): boolean => {
     const e: typeof errors = {};
     if (!form.email) {
@@ -38,11 +38,11 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-  const isValid = validate();
-  if (!isValid) {
-    setLoading(false);
-    return;
-  }
+    const isValid = validate();
+    if (!isValid) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const result = await loginUser(form);
@@ -50,7 +50,7 @@ const LoginForm: React.FC = () => {
       if (!token) throw new Error('Token not received');
 
       localStorage.setItem('token', token);
-      navigate('/profile');
+      navigate('/userPreferences');
     } catch (err: any) {
       if (err.validationErrors) {
         setErrors(err.validationErrors);
@@ -62,15 +62,16 @@ const LoginForm: React.FC = () => {
     }
   };
 
-
   return (
     <Box
       sx={{
-        minHeight: '100vh',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
+        bgcolor: '#0A0A0A',
+        minHeight: '100vh',
+        color: '#fff',
         justifyContent: 'center',
-        bgcolor: 'background.default',
       }}
     >
       <Paper
@@ -78,12 +79,13 @@ const LoginForm: React.FC = () => {
         sx={{
           p: 4,
           width: 360,
-          border: '1px solid',
-          borderColor: 'grey.300',
+          border: '3px solid',
+          borderColor: '#F500A1',
           borderRadius: 3,
+          backgroundColor: '#0A0A0A'
         }}
       >
-        <Typography variant="h5" align="center" sx={{ color: '#2C2C2C', mb: 2 }}>
+        <Typography variant="h4" align="center" sx={{ color: '#F500A1', mb: 2 }}>
           Вход
         </Typography>
 
@@ -125,7 +127,7 @@ const LoginForm: React.FC = () => {
 
         <Box sx={{ mt: 2, textAlign: 'center' }}>
           <Typography variant="subtitle1" component="div" sx={{ color: '#2C2C2C' }}>
-            <Link href="/register" underline="none" sx={{ color: 'inherit' }}>
+            <Link href="/register" underline="none" sx={{ color: 'white' }}>
               Нет аккаунта?
             </Link>
           </Typography>

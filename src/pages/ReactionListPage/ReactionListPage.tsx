@@ -15,6 +15,7 @@ interface ReactionListPageProps {
   actionIcon: ReactNode;
   onAction: (userId: string) => void;
   onDataLoaded?: (users: UserDTO[]) => void;
+  actionButtonColor?: string;
 }
 
 const ReactionListPage: React.FC<ReactionListPageProps> = memo(({
@@ -25,6 +26,7 @@ const ReactionListPage: React.FC<ReactionListPageProps> = memo(({
   actionIcon,
   onAction,
   onDataLoaded,
+  actionButtonColor = '#F500A1'
 }) => {
   const [users, setUsers] = useState<UserDTO[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,8 +55,8 @@ const ReactionListPage: React.FC<ReactionListPageProps> = memo(({
   }, [onAction]);
 
   return (
-    <Box sx={{ p: 2, position: 'relative', top: 80 }}>
-      <Typography variant="h4" sx={{ mb: 3 }}>
+    <Box sx={{ p: 2, position: 'relative', top: 50,   bgcolor: '#0A0A0A', }}>
+      <Typography variant="h4" sx={{ mb: 3, color: '#F500A1' }}>
         {title} ({users.length})
       </Typography>
 
@@ -71,6 +73,7 @@ const ReactionListPage: React.FC<ReactionListPageProps> = memo(({
               showTelegram={showTelegram}
               showMatchLabel={showMatchLabel}
               handleAction={handleAction}
+              buttonColor={actionButtonColor}
             />
           ))}
         </List>

@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <AppBar sx={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000, backgroundColor: 'black' }}>
+    <AppBar sx={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000, backgroundColor: 'black', borderBottom: '2px solid #F500A1' }}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           HITS<FavoriteIcon fontSize="small" sx={{ position: 'relative', top: '2px' }} />лав
@@ -100,10 +100,10 @@ const Navbar: React.FC = () => {
               navigate('/profile');
               openMenu();
             }}>Профиль</MenuItem>
-            <MenuItem onClick={() => {
-              navigate('/messenger');
-              openMenu();
-            }}>Чаты</MenuItem>
+          <MenuItem onClick={() => {
+            navigate('/messenger');
+            openMenu();
+          }}>Чаты</MenuItem>
           <MenuItem onClick={() => {
             navigate('/liked');
             openMenu();

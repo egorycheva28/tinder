@@ -7,8 +7,10 @@ const DislikesPage = () => (
     title="Мои дизлайки"
     fetchData={getDislikedUsers}
     showTelegram={false}
-    actionIcon={<CloseIcon color="action" />}
+    actionIcon={<CloseIcon />}
+actionButtonColor="#ccc"
     onAction={removeUserPreference}
+
   />
 );
 

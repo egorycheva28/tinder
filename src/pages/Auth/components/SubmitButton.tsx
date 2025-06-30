@@ -5,6 +5,7 @@ interface SubmitButtonProps {
   disabled?: boolean
   width?: number | string
   height?: number | string
+  sx?:{}
 }
 
 const SubmitButton: React.FC<SubmitButtonProps> = ({
@@ -12,6 +13,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
   disabled = false,
   width = '100%',
   height = 48,
+  sx
 }) => (
   <Button
     type="submit"
@@ -20,6 +22,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
     sx={{
       mt: 3,
       borderRadius: 2.5,
+      borderColor: '#F500A1',
       width,
       height,
       bgcolor: '#2C2C2C',

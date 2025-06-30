@@ -49,15 +49,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
   }, [handleKey]);
 
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        overflowX: 'hidden',
-        overflowY: 'visible',
-        display: 'flex',
-        justifyContent: 'center'
-      }}
-    >
+    <Box sx={{ width: '100vw', display: 'flex', justifyContent: 'center' }}>
       <Box sx={{ width: 400, textAlign: 'center', pb: 2 }}>
         <motion.div
           animate={controls}
@@ -70,7 +62,17 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
           }}
           style={{ cursor: 'grab' }}
         >
-          <Card sx={{ width: 400, height: 550, borderRadius: 3, overflow: 'hidden', boxShadow: 4 }}>
+          <Card
+            sx={{
+              width: 400,
+              height: 550,
+              borderRadius: 4,
+              overflow: 'hidden',
+              boxShadow: 8,
+              bgcolor: '#121212',
+              color: 'white',
+            }}
+          >
             <Box sx={{ width: '100%', height: 400, position: 'relative' }}>
               {user.photoUrl ? (
                 <CardMedia
@@ -83,7 +85,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
                     objectFit: 'cover',
                     position: 'absolute',
                     top: 0,
-                    left: 0
+                    left: 0,
                   }}
                 />
               ) : (
@@ -91,10 +93,10 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
                   sx={{
                     width: '100%',
                     height: '100%',
-                    backgroundColor: 'grey.300',
+                    backgroundColor: '#333',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
                   }}
                 >
                   <Typography variant="h4" sx={{ color: '#fff' }}>
@@ -104,14 +106,14 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
               )}
             </Box>
             <CardContent sx={{ py: 2, px: 3 }}>
-              <Typography variant="h4" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: '#F500A1' }}>
                 {user.firstName} {user.lastName}, {user.age}
               </Typography>
-              <Typography variant="subtitle1" color="textSecondary" sx={{ mt: 1 }}>
+              <Typography variant="subtitle1" sx={{ mt: 1, color: '#ccc' }}>
                 {educationRus}, {user.course} курс
               </Typography>
               {user.about && (
-                <Typography variant="body1" sx={{ mt: 2, fontStyle: 'italic' }}>
+                <Typography variant="body2" sx={{ mt: 2, fontStyle: 'italic', color: '#eee' }}>
                   "{user.about}"
                 </Typography>
               )}
@@ -119,11 +121,26 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSwipe }) => {
           </Card>
         </motion.div>
         <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 2 }}>
-          <IconButton onClick={() => triggerSwipe('left')} sx={{ bgcolor: '#fff', boxShadow: 2 }}>
+          <IconButton
+            onClick={() => triggerSwipe('left')}
+            sx={{
+              bgcolor: '#1E1E1E',
+              boxShadow: 4,
+              color: '#fff',
+              '&:hover': { bgcolor: '#333' }
+            }}
+          >
             <CloseIcon fontSize="large" />
           </IconButton>
-          <IconButton onClick={() => triggerSwipe('right')} sx={{ bgcolor: '#fff', boxShadow: 2 }}>
-            <FavoriteIcon fontSize="large" color="error" />
+          <IconButton
+            onClick={() => triggerSwipe('right')}
+            sx={{
+              bgcolor: '#F500A1',
+              boxShadow: 4,
+              '&:hover': { bgcolor: '#d40085' }
+            }}
+          >
+            <FavoriteIcon fontSize="large" sx={{ color: '#fff' }} />
           </IconButton>
         </Box>
       </Box>

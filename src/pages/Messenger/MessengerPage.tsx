@@ -85,9 +85,9 @@ const MessengerPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', height: '90vh', top: 70, position: 'relative', bgcolor: '#f5f5f5' }}>
+    <Box sx={{ display: 'flex', height: '90vh', top: 70, position: 'relative', bgcolor: '#0A0A0A', color: '#fff' }}>
   
-      <Box sx={{ width: 300, borderRight: 1, borderColor: 'divider' }}>
+      <Box sx={{ width: 300, borderRight: 1, borderColor: '#333' }}>
         <DialogList
           dialogs={dialogs}
           loading={loadingDialogs}

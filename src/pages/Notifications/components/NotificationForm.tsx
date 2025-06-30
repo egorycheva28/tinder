@@ -65,20 +65,20 @@ const NotificationForm: React.FC = () => {
     }, [isRead]);
 
     return (
-        <Box sx={{ padding: '20px', top: 50, position: 'relative' }}>
-            <Typography variant="h4" sx={{ textAlign: 'center' }}>
+        <Box sx={{ padding: '20px', top: 50, position: 'relative', color: '#fff' }}>
+            <Typography variant="h4" sx={{ textAlign: 'center', color: '#F500A1' }}>
                 Уведомления
             </Typography>
             {notifications && notifications.length > 0 ? (
                 notifications.some(n => !n.isRead) ? (
-                    <List>
+                    <List sx={{ bgcolor: '#1A1A1A', borderRadius: 2 }}>
                         {notifications?.filter(notification => !notification.isRead).map((notification) => (
                             <ListItem key={notification.id} divider>
                                 <ListItemText
                                     primary={notification.message}
                                     secondary={
                                         <>
-                                            <Typography variant="caption" color="textSecondary">
+                                            <Typography variant="caption" sx={{ color: '#ccc' }}>
                                                 {new Date(notification.createdAt).toLocaleString()}
                                             </Typography>
                                         </>
@@ -88,9 +88,12 @@ const NotificationForm: React.FC = () => {
                                     <Checkbox
                                         checked={notification.isRead}
                                         onChange={() => readedNotification(notification.id)}
-                                        color="primary"
+                                        sx={{
+                                            color: '#F500A1',
+                                            '&.Mui-checked': { color: '#F500A1' }
+                                        }}
                                     />
-                                    <Typography variant="caption" color="textSecondary">
+                                    <Typography variant="caption" sx={{ color: '#aaa' }}>
                                         не прочитано
                                     </Typography>
                                 </Box>
@@ -98,9 +101,9 @@ const NotificationForm: React.FC = () => {
                         ))}
                     </List>
                 ) : (
-                    <Typography>Нет новых уведомлений</Typography>)
+                    <Typography sx={{ color: '#ccc' }}>Нет новых уведомлений</Typography>)
             ) : (
-                <Typography>Нет новых уведомлений</Typography>
+                <Typography sx={{ color: '#ccc' }}>Нет новых уведомлений</Typography>
             )}
         </Box>
     );
