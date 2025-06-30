@@ -97,22 +97,23 @@ const RegistrationForm: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        bgcolor: 'background.default',
+        bgcolor: '#0A0A0A',
       }}
     >
       <Paper
         elevation={0}
         sx={{
-          px: 3,
+          px: 1,
           width: '100%',
           maxWidth: 510,
-          border: '1px solid',
-          borderColor: 'grey.300',
+          border: '3px solid',
+          borderColor: '#F500A1',
           borderRadius: 3,
-          overflowY: 'auto',
+          backgroundColor: '#0A0A0A',
+          overflowY: 'auto'
         }}
       >
-        <Typography variant="h5" align="center" sx={{ color: '#2C2C2C', mb: 0.5, mt: 0.5 }}>
+        <Typography variant="h4" align="center" sx={{ color: '#F500A1', mb: 0.5, mt: 0.5 }}>
           Регистрация
         </Typography>
 
@@ -223,7 +224,7 @@ const RegistrationForm: React.FC = () => {
             height={34}
           />
 
-          <SubmitButton text="Зарегистрироваться" width={506} height={38} disabled={loading} />
+          <SubmitButton text="Зарегистрироваться" width={506} height={38} disabled={loading} sx={{ display: 'flex', justifyContent: 'flex-start' }} />
         </Box>
       </Paper>
     </Box>
