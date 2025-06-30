@@ -38,16 +38,16 @@ const FormField: React.FC<FormFieldProps> = ({
   if (disabled) {
     return (
       <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle1" sx={{ color: '#2C2C2C', mb: 0.5, fontWeight: 600 }}>
+        <Typography variant="subtitle1" sx={{ color: '#fff', mb: 0.5, fontWeight: 600 }}>
           {label}
         </Typography>
-        <Typography variant="body1">{value.toLocaleString()}</Typography>
+        <Typography variant="body1" sx={{ color: '#fff' }}>{value.toLocaleString()}</Typography>
       </Box>
     );
   }
   return (
     <Box sx={{ mb: 0.1 }}>
-      <Typography variant="subtitle1" sx={{ color: '#2C2C2C', mb: 0.1, fontWeight: 600 }}>
+      <Typography variant="subtitle1" sx={{ color: '#fff', mb: 0.1, fontWeight: 600 }}>
         {label}
       </Typography>
       <TextField
@@ -60,7 +60,7 @@ const FormField: React.FC<FormFieldProps> = ({
         onChange={onChange}
         variant="outlined"
         margin="dense"
-        error={error} 
+        error={error}
         helperText={helperText}
         FormHelperTextProps={{
           sx: {
@@ -71,7 +71,7 @@ const FormField: React.FC<FormFieldProps> = ({
         InputProps={{
           sx: {
             '& .MuiOutlinedInput-input': {
-              padding: '4px 8px',
+              padding: '4px 8px', color: '#fff'
             },
           }
         }}
@@ -80,9 +80,10 @@ const FormField: React.FC<FormFieldProps> = ({
           ...(height ? { height } : {}),
           '& .MuiOutlinedInput-root': {
             borderRadius: 2,
+            border: '2px solid #F500A1',
             ...(height ? { height } : {}),
             '&.Mui-focused fieldset': {
-              borderColor: '#2C2C2C',
+              color: '#fff',
             },
           },
         }}
