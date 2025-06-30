@@ -21,7 +21,7 @@ const MatchesPage: React.FC = () => {
 
   return (
     <ReactionListPage
-      title="Страница матчей"
+      title="Страница мэтчей"
       fetchData={getMatchedUsers}
       showTelegram={true}
       actionIcon={<ChatIcon />}
