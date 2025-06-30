@@ -34,7 +34,7 @@ const FormField: React.FC<FormFieldProps> = ({
   helperText = '',
 }) => (
   <Box sx={{ mb: 0 }}>
-    <Typography variant="subtitle1" sx={{ color: '#2C2C2C', mb: 0 }}>
+    <Typography variant="subtitle1" sx={{ color: '#fff', mb: 0 }}>
       {label}
     </Typography>
     <TextField
@@ -54,10 +54,10 @@ const FormField: React.FC<FormFieldProps> = ({
           margin: 0,
         }
       }}
-           InputProps={{
+      InputProps={{
         sx: {
           '& .MuiOutlinedInput-input': {
-            padding: '4px 8px',
+            padding: '4px 8px', color: '#fff'
           },
         }
       }}
@@ -66,9 +66,10 @@ const FormField: React.FC<FormFieldProps> = ({
         ...(height ? { height } : {}),
         '& .MuiOutlinedInput-root': {
           borderRadius: 2,
+          border: '2px solid #F500A1',
           ...(height ? { height } : {}),
           '&.Mui-focused fieldset': {
-            borderColor: '#2C2C2C',
+            color: '#fff'
           },
         },
       }}
@@ -76,6 +77,7 @@ const FormField: React.FC<FormFieldProps> = ({
       {options?.map(opt => (
         <MenuItem key={opt.value} value={opt.value}>
           {opt.label}
+
         </MenuItem>
       ))}
     </TextField>

@@ -20,6 +20,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
     sx={{
       mt: 3,
       borderRadius: 2.5,
+      borderColor: '#F500A1',
       width,
       height,
       bgcolor: '#2C2C2C',
