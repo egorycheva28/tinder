@@ -117,7 +117,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Box
         ref={scrollRef}
-        sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column', gap: 1.5 }}
+        sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column', gap: 1.5, bgcolor:'#0A0A0A' }}
       >
         {sorted.map((msg) => {
           const isMine = msg.fromUserId !== selectedId;
@@ -131,8 +131,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 onContextMenu={isMine ? (e) => handleContextMenu(e, msg.id) : undefined}
                 sx={{
                   position: 'relative',
-                  bgcolor: isMine ? '#bbdefb' : '#e0e0e0',
-                  color: '#000',
+                 bgcolor: isMine? '#F500A1':'#1A1A1A',
+                  color:'#fff',
                   p: 1.5,
                   maxWidth: '70%',
                   borderRadius: radius,
@@ -158,18 +158,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         })}
       </Box>
 
-      <Box sx={{ p: 1, display: 'flex', alignItems: 'center', bgcolor: '#fff', boxShadow: '0 -1px 4px rgba(0,0,0,0.1)' }}>
+      <Box sx={{ p: 1, display: 'flex', alignItems: 'center', bgcolor:'#121212' }}>
         <TextField
           fullWidth
           placeholder="Введите сообщение..."
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={handleKey}
-          sx={{ borderRadius: '20px', bgcolor: '#f0f0f0' }}
+         sx={{ bgcolor:'#1A1A1A', borderRadius:'20px', input:{ color:'#fff' }}}
         />
         <IconButton
-          color="primary"
-          sx={{ ml: 1 }}
+          sx={{ ml: 1, color:'#F500A1', '&.Mui-disabled': { color:'#F500A1', opacity: 1} }}
           disabled={!draft.trim()}
           onClick={() => {
             onSend(draft.trim());
@@ -191,19 +190,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       </Menu>
 
       <Dialog open={isEditing} onClose={() => setIsEditing(false)}>
-        <DialogTitle>Редактировать сообщение</DialogTitle>
-        <DialogContent>
+          <DialogTitle sx={{ bgcolor:'#0A0A0A', color:'#F500A1' }}>Редактировать сообщение</DialogTitle>
+         <DialogContent sx={{ bgcolor:'#0A0A0A' }}>
           <TextField
             fullWidth
             multiline
             minRows={2}
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
+            sx={{ input:{ color:'#fff' }, bgcolor:'#1A1A1A' }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsEditing(false)}>Отмена</Button>
-          <Button onClick={handleConfirmEdit} disabled={!editText.trim()}>
+          <Button onClick={() => setIsEditing(false)} sx={{ color:'#fff' }}>Отмена</Button>
+          <Button onClick={handleConfirmEdit} disabled={!editText.trim()} sx={{ color:'#F500A1' }}>
             Сохранить
           </Button>
         </DialogActions>

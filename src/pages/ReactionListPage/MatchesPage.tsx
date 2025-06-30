@@ -24,9 +24,10 @@ const MatchesPage: React.FC = () => {
       title="Страница матчей"
       fetchData={getMatchedUsers}
       showTelegram={true}
-      actionIcon={<ChatIcon color="primary" />}
-      onDataLoaded={handleDataLoaded}   
-      onAction={handleStartChat}         
+      actionIcon={<ChatIcon />}
+      actionButtonColor="#2196f3"
+      onDataLoaded={handleDataLoaded}
+      onAction={handleStartChat}
     />
   );
 };
